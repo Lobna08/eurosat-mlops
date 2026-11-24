@@ -1,0 +1,33 @@
+# Environnements virtuels
+.venv/
+venv/
+env/
+
+# Caches Python et compilation
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+.ipynb_checkpoints/
+
+# Donnees et modeles : versionnes par DVC, jamais par Git
+/data/raw/
+/data/processed/
+/models/
+
+# MLflow (backend store SQLite + artifact store locaux)
+mlflow.db
+mlruns/
+mlartifacts/
+
+# Supports de cours (non redistribuables)
+/inputs/
+inputs/
+
+# Brief de l'assistant et documentation de travail personnelle (hors Git)
+CLAUDE.md
+docs/
+
+# Secrets
+.env

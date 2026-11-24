@@ -1,0 +1,11 @@
+{
+  "test_accuracy": 0.9662,
+  "test_f1_macro": 0.9651,
+  "test_f1_weighted": 0.9662,
+  "test_precision_macro": 0.9652,
+  "test_recall_macro": 0.965,
+  "latency_ms_cpu_torch_b1": 137.9918,
+  "model_size_mb": 94.4321,
+  "params_total": 23528522.0,
+  "test_samples": 4050.0
+}

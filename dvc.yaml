@@ -1,0 +1,73 @@
+stages:
+  prepare:
+    cmd: python src/data/dataset.py
+    deps:
+      - src/data/dataset.py
+      - data/raw
+    params:
+      - seed
+      - prepare.raw_dir
+      - prepare.val_size
+      - prepare.test_size
+      - prepare.subset_per_class
+    outs:
+      - data/processed/train.csv
+      - data/processed/val.csv
+      - data/processed/test.csv
+      - data/processed/split_report.json
+
+  train:
+    cmd: python src/models/train.py
+    deps:
+      - src/models/train.py
+      - src/models/architecture.py
+      - src/data/dataset.py
+      - data/processed/train.csv
+      - data/processed/val.csv
+      - data/processed/split_report.json
+    params:
+      - seed
+      - train.model
+      - train.strategy
+      - train.img_size
+      - train.batch_size
+      - train.epochs
+      - train.lr
+      - train.weight_decay
+      - mlflow.tracking_uri
+      - mlflow.experiment
+    outs:
+      - models/resnet50_linear_probe.pt
+      - models/run_info.json
+    plots:
+      - metrics/train_history.csv:
+          cache: false
+          x: epoch
+          y: val_f1_macro
+      - metrics/learning_curves.png:
+          cache: false
+
+  evaluate:
+    cmd: python src/models/evaluate.py
+    deps:
+      - src/models/evaluate.py
+      - src/models/architecture.py
+      - src/data/dataset.py
+      - models/resnet50_linear_probe.pt
+      - models/run_info.json
+      - data/processed/test.csv
+    params:
+      - train.img_size
+      - train.batch_size
+      - mlflow.tracking_uri
+      - mlflow.registered_model
+    metrics:
+      - metrics/scores.json:
+          cache: false
+      - metrics/registry.json:
+          cache: false
+    outs:
+      - metrics/classification_report.json:
+          cache: false
+      - metrics/confusion_matrix.png:
+          cache: false

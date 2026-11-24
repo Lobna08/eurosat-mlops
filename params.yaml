@@ -1,0 +1,29 @@
+seed: 42
+
+prepare:
+  raw_dir: data/raw/EuroSAT_RGB
+  # Split stratifie 70 / 15 / 15 calcule sur les 27 000 images.
+  val_size: 0.15
+  test_size: 0.15
+  # Nombre d'images par classe tirees DANS chaque partition ; null = partition complete.
+  # Partitions completes : extraction mesuree a 6.2 img/s sur ce CPU, soit ~51 min
+  # pour les 18 899 images train (seuil fixe : 60 min).
+  subset_per_class:
+    train: null
+    val: null
+    test: null
+
+train:
+  model: resnet50
+  # linear_probe = backbone ImageNet gele, seule la couche fc (2048 -> 10) est entrainee.
+  strategy: linear_probe
+  img_size: 224
+  batch_size: 32
+  epochs: 30
+  lr: 0.001
+  weight_decay: 0.0001
+
+mlflow:
+  tracking_uri: sqlite:///mlflow.db
+  experiment: EuroSAT-Classification
+  registered_model: EuroSAT-ResNet50
