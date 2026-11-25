@@ -3,12 +3,6 @@
 Classification de l'occupation des sols (EuroSAT RGB, 27 000 images Sentinel-2, 10 classes),
 Axe 4 (Vision Transformers) du projet Deep Learning Avancé & MLOps.
 
-> **État : checkpoint A (24/11/2026).** Ce qui est en place : données versionnées par DVC, pipeline `dvc.yaml`
-> reproductible, baseline ResNet50 (linear probe) tracée dans MLflow puis enregistrée dans le Model Registry (Staging)
-> **après** évaluation sur le test.
-> À venir : export ONNX + API FastAPI, frontend React, Docker multi-stage + docker-compose, CI GitHub Actions (checkpoint B),
-> puis ViT-B/16 / Swin et XAI (checkpoint C).
-
 ## Installation (Windows, convention des TPs)
 
 Prérequis : Python 3.11, Poetry ≥ 2, Git.
