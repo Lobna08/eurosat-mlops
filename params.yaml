@@ -27,3 +27,14 @@ mlflow:
   tracking_uri: sqlite:///mlflow.db
   experiment: EuroSAT-Classification
   registered_model: EuroSAT-ResNet50
+export:
+  opset: 18
+  # Equivalence PyTorch / ONNX FP32 : logits en absolu, features (layer4, valeurs
+  # jusqu'a ~25) en relatif a leur max. Le stage echoue au-dela.
+  atol_logits: 1.0e-4
+  rtol_features: 1.0e-4
+  n_check: 100
+  latency_runs: 50
+  eval_batch_size: 8
+  # INT8 evalue sur un sous-ensemble stratifie du test (seed globale) : ~1 s/image
+  int8_eval_subset: 500
