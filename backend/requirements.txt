@@ -1,0 +1,8 @@
+# Dependances runtime de l'API (sans PyTorch). Versions alignees sur poetry.lock.
+fastapi==0.165.0
+uvicorn[standard]==0.54.0
+pydantic==2.14.4
+python-multipart==0.0.34
+onnxruntime==1.32.0
+numpy==2.4.6
+pillow==11.3.0

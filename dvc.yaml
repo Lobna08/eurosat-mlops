@@ -71,3 +71,29 @@ stages:
           cache: false
       - metrics/confusion_matrix.png:
           cache: false
+
+  export:
+    cmd: python src/models/export_onnx.py
+    deps:
+      - src/models/export_onnx.py
+      - src/models/architecture.py
+      - src/data/dataset.py
+      - models/resnet50_linear_probe.pt
+      - models/run_info.json
+      - data/processed/test.csv
+      - data/raw
+      - metrics/scores.json
+      - metrics/registry.json
+    params:
+      - seed
+      - train.img_size
+      - export
+      - mlflow.tracking_uri
+    outs:
+      - models/resnet50.onnx
+      - models/resnet50_int8.onnx
+      - models/fc_weights.npz
+      - models/model_metadata.json
+    metrics:
+      - metrics/export.json:
+          cache: false

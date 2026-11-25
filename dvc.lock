@@ -145,3 +145,77 @@ stages:
       hash: md5
       md5: 94ca63bd29e79513978d509a9b14c5d9
       size: 283
+  export:
+    cmd: python src/models/export_onnx.py
+    deps:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: f5a59839402a5a439c101d52ecfdd05e
+      size: 262714
+    - path: data/raw
+      hash: md5
+      md5: df879aae2410cb9e50c444b05b1abb8d.dir
+      size: 91844360
+      nfiles: 27000
+    - path: metrics/registry.json
+      hash: md5
+      md5: 190835af759e193e442a52e5c858cafd
+      size: 141
+    - path: metrics/scores.json
+      hash: md5
+      md5: 94ca63bd29e79513978d509a9b14c5d9
+      size: 283
+    - path: models/resnet50_linear_probe.pt
+      hash: md5
+      md5: d568c6a506ecbe8a682ab07bb6fa73e2
+      size: 94432147
+    - path: models/run_info.json
+      hash: md5
+      md5: 818a41cc0c497be682cef919e45da490
+      size: 280
+    - path: src/data/dataset.py
+      hash: md5
+      md5: 3100f37fcf58b3c57c604e60fe13efb7
+      size: 4951
+    - path: src/models/architecture.py
+      hash: md5
+      md5: 0c5f2a634bc883a5cece81ae47d03573
+      size: 1706
+    - path: src/models/export_onnx.py
+      hash: md5
+      md5: ef4cabfb8c44ef56f282ed0e98b9cb79
+      size: 11360
+    params:
+      params.yaml:
+        export:
+          opset: 18
+          atol_logits: 0.0001
+          rtol_features: 0.0001
+          n_check: 100
+          latency_runs: 50
+          eval_batch_size: 8
+          int8_eval_subset: 500
+        mlflow.tracking_uri: sqlite:///mlflow.db
+        seed: 42
+        train.img_size: 224
+    outs:
+    - path: metrics/export.json
+      hash: md5
+      md5: 10742ed96fa13bb7f402aea8f070dba1
+      size: 790
+    - path: models/fc_weights.npz
+      hash: md5
+      md5: ea2c1e530c3ae026c86b7f44649ae0db
+      size: 82466
+    - path: models/model_metadata.json
+      hash: md5
+      md5: 8fa73db1da6052cf9050f9a2c65b9017
+      size: 848
+    - path: models/resnet50.onnx
+      hash: md5
+      md5: 5387e49f3083cf4f6d0d4cf35fce1c75
+      size: 94270429
+    - path: models/resnet50_int8.onnx
+      hash: md5
+      md5: 2824705b7a33d08837e317be81c003d4
+      size: 23789692
