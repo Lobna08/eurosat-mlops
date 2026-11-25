@@ -60,6 +60,26 @@ Split stratifié 70/15/15 (seed 42) : train 18 899 · val 4 051 · test 4 050 im
 
 Ce baseline n'est pas final : le fine-tuning et la comparaison avec ViT-B/16 sont prévus sur GPU (checkpoint C).
 
+## API
+
+```powershell
+cd backend
+..\.venv\Scripts\python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
+
+Swagger : http://127.0.0.1:8000/docs
+
+- `GET /health` : état du service, modèle chargé, version du Registry, GPU disponible (503 si le modèle n'est pas chargé).
+- `GET /model/metadata` : nom, architecture, version du Registry, classes, métriques sur le test.
+- `POST /predict` : image → classe prédite, probabilités des 10 classes, latence serveur en ms (400 si le fichier n'est pas une image).
+- `POST /predict/visualize` : image → PNG de la carte d'activation (CAM) de la classe prédite.
+
+```powershell
+curl.exe -X POST http://127.0.0.1:8000/predict -F "file=@data/raw/EuroSAT_RGB/AnnualCrop/AnnualCrop_10.jpg"
+```
+
+L'API sert le modèle ONNX FP32 (F1 macro 0.9651 sur le test complet, 59.1 ms en batch 1) plutôt que l'INT8 dynamique, qui est 4 fois plus petit (23.8 Mo contre 94.3 Mo) mais plus lent sur ce CPU (1 147.2 ms) et moins précis (F1 macro 0.8444 contre 0.9674 pour le FP32 sur les mêmes 500 images du test).
+
 ## Suivi des expériences (MLflow)
 
 ```powershell
