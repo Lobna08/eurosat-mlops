@@ -9,10 +9,16 @@ packages = [{ include = "src" }]
 
 [tool.poetry.dependencies]
 python = ">=3.11,<3.12"
-# PyTorch CPU (machine temporaire sans GPU exploitable, cf. docs/TDR.md TDR-002).
-# Pour la machine RTX 5060 : remplacer la source "pytorch-cpu" par une source cu128.
-torch = { version = "^2.9", source = "pytorch-cpu" }
-torchvision = { version = "^0.29", source = "pytorch-cpu" }
+# PyTorch : wheels PyPI sur macOS (Apple Silicon, backend MPS) ;
+# index pytorch-cpu sur Linux (CI + Docker).
+torch = [
+    { version = "^2.9", source = "PyPI", markers = "sys_platform == 'darwin'" },
+    { version = "^2.9", source = "pytorch-cpu", markers = "sys_platform != 'darwin'" },
+]
+torchvision = [
+    { version = "^0.29", source = "PyPI", markers = "sys_platform == 'darwin'" },
+    { version = "^0.29", source = "pytorch-cpu", markers = "sys_platform != 'darwin'" },
+]
 numpy = "^2.1"
 pandas = "^2.2"
 scikit-learn = "^1.5"
@@ -35,6 +41,11 @@ isort = "^5.13"
 flake8 = "^7.0"
 pre-commit = "^3.6"
 httpx = "^0.28"
+
+# PyPI declare explicitement : requis par Poetry 2.x pour "source = PyPI".
+[[tool.poetry.source]]
+name = "PyPI"
+priority = "primary"
 
 [[tool.poetry.source]]
 name = "pytorch-cpu"
